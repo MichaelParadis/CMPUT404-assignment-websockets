@@ -38,11 +38,11 @@ class World:
         entry = self.space.get(entity,dict())
         entry[key] = value
         self.space[entity] = entry
-        self.update_listeners( entity )
+        #self.update_listeners( entity )
 
     def set(self, entity, data):
         self.space[entity] = data
-        self.update_listeners( entity )
+        #self.update_listeners( entity )
 
     def update_listeners(self, entity):
         '''update the set listeners'''
@@ -70,7 +70,7 @@ def send_all(msg):
 
 
 def send_all_json(obj):
-    send_all( json.dumps(obj) )
+    send_all( json.dumps(obj))
 
 
 class Client:
@@ -85,11 +85,7 @@ class Client:
 
 
 def set_listener( entity, data ):
-    ''' do something with the update ! '''
-    data_to_send = json.dumps({"entity": entity, 'data': data})
-    for client in clients:
-        client.put(data_to_send)
-
+    pass
 
 myWorld.add_set_listener( set_listener )
         
@@ -107,7 +103,9 @@ def read_ws(ws,client):
             msg = ws.receive()
             if (msg is not None):
                 packet = json.loads(msg)
-                myWorld.set(packet['entity'], packet['data'])
+                for entity in packet:
+                    myWorld.set(entity, packet[entity])
+                send_all_json(packet)
             else:
                 break
     except:
