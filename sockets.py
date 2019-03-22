@@ -109,7 +109,8 @@ def read_ws(ws,client):
             else:
                 break
     except:
-        pass
+        '''Done'''
+
 # From Abram Hindle
 # example code https://github.com/abramhindle/WebSocketsExamples/blob/master/chat.py
 @sockets.route('/subscribe')
